@@ -1,6 +1,7 @@
 #!/bin/bash -xve
 
 #required packages
+pip install urllib3
 pip install catkin_pkg
 pip install empy
 pip install pyyaml
