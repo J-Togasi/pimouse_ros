@@ -1,7 +1,7 @@
 #!/bin/bash -xve
 
 #required packages
-pip install --upgrade pip
+sudo pip install --upgrade pip
 pip install urllib3
 pip install catkin_pkg
 pip install empy
