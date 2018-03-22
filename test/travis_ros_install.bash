@@ -2,11 +2,11 @@
 
 #required packages
 sudo pip install --upgrade pip
-pip install urllib3
-pip install catkin_pkg
-pip install empy
-pip install pyyaml
-pip install rospkg
+sudo pip install urllib3
+sudo pip install catkin_pkg
+sudo pip install empy
+sudo pip install pyyaml
+sudo pip install rospkg
 
 #ros install
 cd ..
