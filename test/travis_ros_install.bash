@@ -2,7 +2,6 @@
 
 #required packages
 sudo pip install --upgrade pip
-#sudo pip install urllib3
 sudo pip install catkin_pkg
 sudo pip install empy
 sudo pip install pyyaml
@@ -21,4 +20,4 @@ cd ~/catkin_ws/src
 source /opt/ros/indigo/setup.bash
 catkin_init_workspace
 cd ~/catkin_ws
-catkin_male
+catkin_make
