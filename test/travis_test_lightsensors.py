@@ -8,7 +8,7 @@ from pimouse_ros.msg import LightSensorValues
 class LightsensorTest(unittet.TestCase):
     def setUp(self):
         self.count = 0
-        rospy.Subscriber('/lightsensors',LightSensorVales,self.callback)
+        rospy.Subscriber('/lightsensors',LightSensorValues,self.callback)
         self.values = LightSensorVales()
 
     def callback(self):
