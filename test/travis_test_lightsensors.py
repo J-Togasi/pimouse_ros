@@ -25,7 +25,7 @@ class LightsensorTest(unittest.TestCase):
         self.assertEqual(vs.sum_forward,lf+rf,"different value: sum_forward")
 
     def test_nood_exist(self):
-        nodes = rosnode.get_node_name()
+        nodes = rosnode.get_node_names()
         self.asserIn('/lightsensors',nodes,"node dose not exist")
 
     def test_get_value(self):
@@ -39,7 +39,7 @@ class LightsensorTest(unittest.TestCase):
         self.assertFalse(self.count == 0,"cannot subscribe the topic")
         self.check_values(4321,123,0,-1)
 
-    def test_change_param(self):
+    def test_change_parameter(self):
         rospy.set_param('lightsensors_freq',1)
         time.sleep(2)
         c_prev = self.count
