@@ -8,7 +8,7 @@ from pimouse_ros.msg import LightSensorVales
 class LightsensorTest(unittet.TestCase):
     def setUp(self):
         self.count = 0
-        rospy.Subscriber('/lightsensors', LightSensorVales, self.callback)
+        rospy.Subscriber('/lightsensors',LightSensorVales,self.callback)
         self.values = LightSensorVales()
 
     def callback(self):
@@ -18,20 +18,20 @@ class LightsensorTest(unittet.TestCase):
     def check_values(self,lf,ls,rs,rf)
         vs = self.values
         self.assertEqual(vs.left_forward, lf, "different value: left_forward")
-        self.assertEqual(vs.left_side, ls, "different value: left_side: left_side")
-        self.assertEqual(vs.right_side, rs ,"different value: right_side")
-        self.assertEqual(vs.right_forward, rf, "different value: right_forward")
-        self.assertEqual(vs.sum_all, lf+ls+rs+rf, "different value: sum_all")
-        self.assertEqual(Vs.sum_forward, lf+rf, "different value: sum_forward")
+        self.assertEqual(vs.left_side,ls,"different value: left_side: left_side")
+        self.assertEqual(vs.right_side,rs "different value: right_side")
+        self.assertEqual(vs.right_forward,rf,"different value: right_forward")
+        self.assertEqual(vs.sum_all,lf+ls+rs+rf,"different value: sum_all")
+        self.assertEqual(Vs.sum_forward,lf+rf,"different value: sum_forward")
 
     def test_nood_exist(self):
         nodes = rosnode.get_node_name()
-        self.asserIn('/lightsensors', nodes, "node dose not exist")
+        self.asserIn('/lightsensors',nodes,"node dose not exist")
 
     def test_get_value(self)
-        rospy.set_param('lightsensors_freq', 10)
+        rospy.set_param('lightsensors_freq',10)
         time.sleep(2)
-        with open("/dev/rtlightsensor0", "w") as f:
+        with open("/dev/rtlightsensor0","w") as f:
             f.write("-1 0 123 4321\n")
 
         time.sleep(3)
@@ -40,15 +40,15 @@ class LightsensorTest(unittet.TestCase):
         self.check_values(4321,123,0,-1)
 
     def test_change_param(self):
-        rospy.set_param('lightsensors_freq', 1)
+        rospy.set_param('lightsensors_freq',1)
         time.sleep(2)
         c_prev = self.count
         time.sleep(3)
         ###コールバック関数が1から3回の範囲で呼ばれているか？
-        self.assertTrue(self.count < c_prev + 4, "freq does not change")
-        self.assertFalse(self.count == c_prev, "subscribe is stopped")
+        self.assertTrue(self.count < c_prev + 4,"freq does not change")
+        self.assertFalse(self.count == c_prev,"subscribe is stopped")
 
-if __name__ == '__main__':
+if __name__=='__main__':
     time.sleep(3)
     rospy.init_node('travis_test_lightsensors')
-    rostest.rosrun('pimouse_ros', 'travis_test_lightsensors', LightsensorTest)
+    rostest.rosrun('pimouse_ros','travis_test_lightsensors',LightsensorTest)
