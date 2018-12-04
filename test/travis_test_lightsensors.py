@@ -3,7 +3,7 @@
 import unittest, rostest
 import rosnode, rospy
 import time
-from pimouse_ros.msg import LightSensorVales
+from pimouse_ros.msg import LightSensorValues
 
 class LightsensorTest(unittet.TestCase):
     def setUp(self):
