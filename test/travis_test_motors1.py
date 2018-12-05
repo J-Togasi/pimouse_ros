@@ -46,4 +46,4 @@ class MotorTest(unittest.TestCase):
 if __name__ == '__main__':
     time.sleep(3)
     rospy.init_node('travis_test_motors')
-    #rostest.rosrun('pimouse_ros', 'travis_test_motors', MotorTest)
+    rostest.rosrun('pimouse_ros', 'travis_test_motors', MotorTest)
