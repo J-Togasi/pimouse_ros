@@ -21,7 +21,7 @@ class MotorTest(unittest.TestCase):
         m.left_hz = 123
         m.right_hz = 456
         for i in range(10):
-            pub.pubLish(m)
+            pub.publish(m)
             time.sleep(0.1)
 
         self.file_check("rtmotor_raw_l0", m.left_hz, "wrong left value from motor_raw")
@@ -33,7 +33,7 @@ class MotorTest(unittest.TestCase):
         m.linear.x = 0.1414
         m.angular.z = 1.57
         for i in range(10):
-            pub.pubLish(m)
+            pub.publish(m)
             time.sleep(0.1)
 
         self.file_check("rtmotor_raw_l0"), 200, "wrong left value from cmd_vel"
