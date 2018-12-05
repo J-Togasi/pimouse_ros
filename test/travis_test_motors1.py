@@ -9,7 +9,7 @@ from geometry_msgs.msg import Twist
 class MotorTest(unittest.TestCase):
     def file_check(self, dev, value, message):
         with open("/dev/" + dev, "r") as f:
-            self.assertEqual(f.readline(), setr(value) + "\n", message)
+            self.assertEqual(f.readline(), str(value) + "\n", message)
 
     def test_node_exist(self):
         nodes = rosnode.get_node_names()
@@ -36,8 +36,8 @@ class MotorTest(unittest.TestCase):
             pub.publish(m)
             time.sleep(0.1)
 
-        self.file_check("rtmotor_raw_l0"), 200, "wrong left value from cmd_vel"
-        self.file_check("rtmotor_raw_r0"), 600, "wrong right value from cmd_vel"
+        self.file_check("rtmotor_raw_l0", 200, "wrong left value from cmd_vel")
+        self.file_check("rtmotor_raw_r0", 600, "wrong right value from cmd_vel")
 
         time.sleep(1.1)
         self.file_check("rtmotor_raw_l0", 0, "don't stop after 1s")
