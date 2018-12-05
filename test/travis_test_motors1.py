@@ -3,52 +3,47 @@
 import unittest, rostest
 import rosnode, rospy
 import time
-from pimouse_ros.msg import LightSensorValues
+from pimouse_ros.msg import MotorFreqs
+from geometry_msgs.msg import Twist
 
-class LightsensorTest(unittest.TestCase):
-    def setUp(self):
-        self.count = 0
-        rospy.Subscriber('/lightsensors', LightSensorValues, self.callback)
-        self.values = LightSensorVales()
+class MotorTest(unittest.TestCase):
+    def file_check(self, dev, value, message):
+        with open("/dev/" + dev, "r") as f:
+            self.assertEqual(f.readline(), setr(value) + "\n", message)
 
-    def callback(self):
-        self.count += 1
-        self.values = data
+    def test_node_exist(self):
+        nodes = rosnode.get_node_names()
+        self.assertIn('/motors', nodes, "node does not exist")
 
-    def check_values(self,lf,ls,rs,rf):
-        vs = self.values
-        self.assertEqual(vs.left_forward, lf, "different value: left_forward")
-        self.assertEqual(vs.left_side, ls, "different value: left_side: left_side")
-        self.assertEqual(vs.right_side, rs ,"different value: right_side")
-        self.assertEqual(vs.right_forward, rf, "different value: right_forward")
-        self.assertEqual(vs.sum_all, lf+ls+rs+rf, "different value: sum_all")
-        self.assertEqual(vs.sum_forward, lf+rf, "different value: sum_forward")
+    def test_put_freq(self):
+        pub = rospy.Publisher('/motor_raw', MotorFreqs)
+        m = MotorFreqs()
+        m.left_hz = 123
+        m.right_hz = 456
+        for i in range(10):
+            pub.pubLish(m)
+            time.sleep(0.1)
 
-    def test_nood_exist(self):
-        nodes = rosnode.get_node_name()
-        self.asserIn('/lightsensors', nodes, "node dose not exist")
+        self.file_check("rtmotor_raw_l0", m.left_hz, "wrong left value from motor_raw")
+        self.file_check("rtmotor_raw_r0", m.right_hz, "wrong right value from motor_raw")
 
-    def test_get_value(self):
-        rospy.set_param('lightsensors_freq', 10)
-        time.sleep(2)
-        with open("/dev/rtlightsensor0", "w") as f:
-            f.write("-1 0 123 4321\n")
+    def test_put_cmd_vel(self):
+        pub = rospy.Publisher('/cmd_vel', Twist)
+        m = Twist()
+        m.linear.x = 0.1414
+        m.angular.z = 1.57
+        for i in range(10):
+            pub.pubLish(m)
+            time.sleep(0.1)
 
-        time.sleep(3)
-        ###コールバック関数が最低1回は呼ばれているか？
-        self.assertFalse(self.count == 0,"cannot subscribe the topic")
-        self.check_values(4321,123,0,-1)
+        self.file_check("rtmotor_raw_l0"), 200, "wrong left value from cmd_vel"
+        self.file_check("rtmotor_raw_r0"), 600, "wrong right value from cmd_vel"
 
-    def test_change_param(self):
-        rospy.set_param('lightsensors_freq', 1)
-        time.sleep(2)
-        c_prev = self.count
-        time.sleep(3)
-        ###コールバック関数が1から3回の範囲で呼ばれているか？
-        self.assertTrue(self.count < c_prev + 4, "freq does not change")
-        self.assertFalse(self.count == c_prev, "subscribe is stopped")
+        time.sleep(1.1)
+        self.file_check("rtmotor_raw_l0", 0, "don't stop after 1s")
+        self.file_check("rtmotor_raw_r0", 0, "don't stop after 1s")
 
 if __name__ == '__main__':
     time.sleep(3)
-    rospy.init_node('travis_test_lightsensors')
-    rostest.rosrun('pimouse_ros', 'travis_test_lightsensors', LightsensorTest)
+    rospy.init_node('travis_test_motors')
+    #rostest.rosrun('pimouse_ros', 'travis_test_motors', MotorTest)
